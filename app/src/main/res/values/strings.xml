@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">lior and roni</string>
+    <string name="app_name">tictactoe</string>
     <string name="turn">Player X\'s Turn</string>
     <string name="player_x">X</string>
     <string name="player_o">O</string>
