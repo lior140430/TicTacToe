@@ -57,7 +57,7 @@
                 android:shadowDx="0"
                 android:shadowDy="0"
                 android:shadowRadius="8"
-                android:text="X"
+                android:text="@string/player_x"
                 android:textColor="@color/player_x" />
 
             <Button
@@ -74,8 +74,7 @@
                 android:shadowDx="0"
                 android:shadowDy="0"
                 android:shadowRadius="8"
-                android:text="O"
-                android:textColor="@color/player_o" />
+                />
         </LinearLayout>
 
         <!-- Row 2 -->
@@ -100,7 +99,7 @@
                 android:shadowDx="0"
                 android:shadowDy="0"
                 android:shadowRadius="8"
-                android:text="X"
+                android:text="@string/player_x"
                 android:textColor="@color/player_x" />
 
             <Button
@@ -125,7 +124,7 @@
                 android:shadowDx="0"
                 android:shadowDy="0"
                 android:shadowRadius="8"
-                android:text="O"
+                android:text="@string/player_o"
                 android:textColor="@color/player_o" />
 
             <Button
@@ -142,7 +141,7 @@
                 android:shadowDx="0"
                 android:shadowDy="0"
                 android:shadowRadius="8"
-                android:text="X"
+                android:text="@string/player_x"
                 android:textColor="@color/player_x" />
         </LinearLayout>
 
