@@ -39,18 +39,11 @@ class MainActivity : AppCompatActivity() {
     private fun boardTapped(view: View) {
         if (view !is Button || view.text != "") return
 
-        val symbol: String
-        val color: Int
+        val isCross = currentTurn == Turn.CROSS
+        val symbol = getString(if (isCross) R.string.player_x else R.string.player_o)
+        val color = ContextCompat.getColor(this, if (isCross) R.color.player_x else R.color.player_o)
 
-        if (currentTurn == Turn.CROSS) {
-            symbol = getString(R.string.player_x)
-            color = ContextCompat.getColor(this, R.color.player_x)
-            currentTurn = Turn.NOUGHT
-        } else {
-            symbol = getString(R.string.player_o)
-            color = ContextCompat.getColor(this, R.color.player_o)
-            currentTurn = Turn.CROSS
-        }
+        currentTurn = if (isCross) Turn.NOUGHT else Turn.CROSS
 
         view.text = symbol
         view.setTextColor(color)
@@ -90,7 +83,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun resetBoard() {
         boardList.forEach { it.text = "" }
-        firstTurn = if (firstTurn == Turn.NOUGHT) Turn.CROSS else Turn.NOUGHT
+        firstTurn = Turn.CROSS
         currentTurn = firstTurn
         setTurnLabel()
     }
