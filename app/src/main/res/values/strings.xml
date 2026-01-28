@@ -3,4 +3,7 @@
     <string name="turn">Player X\'s Turn</string>
     <string name="player_x">X</string>
     <string name="player_o">O</string>
+    <string name="victory_message">Winner: %s!</string>
+    <string name="draw_message">It\'s a Draw!</string>
+    <string name="reset_button">Play Again</string>
 </resources>

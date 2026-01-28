@@ -1,33 +1,104 @@
 package com.example.tictactoe
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.tictactoe.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    enum class Turn { NOUGHT, CROSS }
+
+    private var firstTurn = Turn.CROSS
+    private var currentTurn = Turn.CROSS
     private var boardList = mutableListOf<Button>()
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         initBoard()
     }
 
     private fun initBoard() {
-        boardList.add(binding.a1)
-        boardList.add(binding.a2)
-        boardList.add(binding.a3)
-        boardList.add(binding.b1)
-        boardList.add(binding.b2)
-        boardList.add(binding.b3)
-        boardList.add(binding.c1)
-        boardList.add(binding.c2)
-        boardList.add(binding.c3)
+        boardList = mutableListOf(
+            binding.a1, binding.a2, binding.a3,
+            binding.b1, binding.b2, binding.b3,
+            binding.c1, binding.c2, binding.c3
+        )
+
+        for (button in boardList) {
+            button.setOnClickListener { boardTapped(it) }
+        }
+    }
+
+    private fun boardTapped(view: View) {
+        if (view !is Button || view.text != "") return
+
+        val symbol: String
+        val color: Int
+
+        if (currentTurn == Turn.CROSS) {
+            symbol = getString(R.string.player_x)
+            color = ContextCompat.getColor(this, R.color.player_x)
+            currentTurn = Turn.NOUGHT
+        } else {
+            symbol = getString(R.string.player_o)
+            color = ContextCompat.getColor(this, R.color.player_o)
+            currentTurn = Turn.CROSS
+        }
+
+        view.text = symbol
+        view.setTextColor(color)
+        setTurnLabel()
+
+        if (checkForVictory(symbol)) {
+            result(getString(R.string.victory_message, symbol))
+        } else if (fullBoard()) {
+            result(getString(R.string.draw_message))
+        }
+    }
+
+    private fun checkForVictory(s: String): Boolean {
+        val winPaths = listOf(
+            listOf(binding.a1, binding.a2, binding.a3),
+            listOf(binding.b1, binding.b2, binding.b3),
+            listOf(binding.c1, binding.c2, binding.c3),
+            listOf(binding.a1, binding.b1, binding.c1),
+            listOf(binding.a2, binding.b2, binding.c2),
+            listOf(binding.a3, binding.b3, binding.c3),
+            listOf(binding.a1, binding.b2, binding.c3),
+            listOf(binding.a3, binding.b2, binding.c1)
+        )
+
+        return winPaths.any { path ->
+            path.all { it.text == s }
+        }
+    }
+
+    private fun result(title: String) {
+        AlertDialog.Builder(this)
+            .setTitle(title)
+            .setPositiveButton(R.string.reset_button) { _, _ -> resetBoard() }
+            .setCancelable(false)
+            .show()
+    }
+
+    private fun resetBoard() {
+        boardList.forEach { it.text = "" }
+        firstTurn = if (firstTurn == Turn.NOUGHT) Turn.CROSS else Turn.NOUGHT
+        currentTurn = firstTurn
+        setTurnLabel()
+    }
+
+    private fun fullBoard(): Boolean = boardList.none { it.text == "" }
+
+    private fun setTurnLabel() {
+        val player = if (currentTurn == Turn.CROSS) getString(R.string.player_x) else getString(R.string.player_o)
+        binding.turnTV.text = "Player $player's Turn"
     }
 }
